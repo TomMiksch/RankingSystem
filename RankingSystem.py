@@ -23,24 +23,24 @@ def calcDefYPG( team ):
 
     for game in team_schedule:
         # Get YPG allowed if game is home
-        # if game.location == 'Home':
-        #     print('game.away_total_yards ' + str(game.boxscore.away_total_yards))
-        #     total_yards = total_yards + game.boxscore.away_total_yards
+        if game.location == 'Home':
+            print('game.away_total_yards ' + str(game.boxscore.away_total_yards))
+            total_yards = total_yards + game.boxscore.away_total_yards
             
-        # # Get YPG allowed if game is away
-        # elif game.location == 'Away':
-        #     print('game.home_total_yards ' + str(game.boxscore.home_total_yards))
-        #     total_yards = total_yards + game.boxscore.home_total_yards
+        # Get YPG allowed if game is away
+        elif game.location == 'Away':
+            print('game.home_total_yards ' + str(game.boxscore.home_total_yards))
+            total_yards = total_yards + game.boxscore.home_total_yards
         
         # Get YPG allowed if game is neutral
-        if game.location == 'Neutral':
-            print(game.home_name)
-            if game.boxscore.home == team.abbreviation:
-                print('game.home_total_yards ' + str(game.boxscore.home_total_yards))
-                total_yards = total_yards + game.boxscore.home_total_yards
-            else:
-                print('game.away_total_yards ' + str(game.boxscore.away_total_yards))
-                total_yards = total_yards + game.boxscore.away_total_yards
+        # if game.location == 'Neutral':
+        #     print(game.home_name)
+        #     if game.boxscore.home == team.abbreviation:
+        #         print('game.home_total_yards ' + str(game.boxscore.home_total_yards))
+        #         total_yards = total_yards + game.boxscore.home_total_yards
+        #     else:
+        #         print('game.away_total_yards ' + str(game.boxscore.away_total_yards))
+        #         total_yards = total_yards + game.boxscore.away_total_yards
 
     return total_yards
 
