@@ -3,6 +3,9 @@ from sportsreference.ncaaf.boxscore import Boxscores
 from sportsreference.ncaaf.teams import Team
 from sportsreference.ncaaf.teams import Teams
 from sportsreference.ncaaf.schedule import Schedule
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import pandas as pd
 from datetime import datetime
 import time
 import collections
@@ -14,41 +17,36 @@ teams = Teams()
 teamRankOrder = collections.OrderedDict()
 rank = 1
 
-# Calculate the YPG allowed by each team
-def calcDefYPG( team ):
-    print(team.name)
+# Gather the YPG allowed by each team
+def calcDefYPG(team):
+    teamNameLowerCase = team.abbreviation
 
-    team_schedule = Schedule(team.abbreviation)
-    total_yards = 0
+    url = "https://www.sports-reference.com/cfb/schools/" + \
+        teamNameLowerCase.lower() + "/2018.html"
+    page = urlopen(url).read()
 
-    for game in team_schedule:
-        # Get YPG allowed if game is home
-        if game.location == 'Home':
-            print('game.away_total_yards ' + str(game.boxscore.away_total_yards))
-            total_yards = total_yards + game.boxscore.away_total_yards
-            
-        # Get YPG allowed if game is away
-        elif game.location == 'Away':
-            print('game.home_total_yards ' + str(game.boxscore.home_total_yards))
-            total_yards = total_yards + game.boxscore.home_total_yards
-        
-        # Get YPG allowed if game is neutral
-        # if game.location == 'Neutral':
-        #     print(game.home_name)
-        #     if game.boxscore.home == team.abbreviation:
-        #         print('game.home_total_yards ' + str(game.boxscore.home_total_yards))
-        #         total_yards = total_yards + game.boxscore.home_total_yards
-        #     else:
-        #         print('game.away_total_yards ' + str(game.boxscore.away_total_yards))
-        #         total_yards = total_yards + game.boxscore.away_total_yards
+    soup = BeautifulSoup(page, features="lxml")
+    table = soup.find("tbody")
+    yards_given_up_per_game = {'opp_tot_yds'}
+
+    rows = table.find_all('tr')
+    for row in rows:
+        for y in yards_given_up_per_game:
+            cell = row.find("td",{"data-stat": y})
+            if (cell != None):
+                a = cell.text.strip().encode()
+                text = a.decode("utf-8")
+
+    total_yards = float(text)
 
     return total_yards
 
 # Calculate the ranking score for each team
-def calculateRankScore( team ):
-    calc_wins = team.wins + team.conference_wins
-    ypg_diff = (team.yards - calcDefYPG(team)) / team.games
-    total = calc_wins * ypg_diff
+def calculateRankScore(team):
+    calc_wins = (team.wins + team.conference_wins) * .2
+    ypg_diff = (team.yards - calcDefYPG(team)) * .01
+    total = calc_wins + ypg_diff
+    print(team.name + "'s score - " + str(total))
     return total
 
 # Main function
@@ -56,7 +54,7 @@ for team in teams:
     teamRankOrder[team.name] = calculateRankScore(team)
 
 # Output results
-for key, value in sorted(teamRankOrder.items(), key=lambda item: item[1], reverse = True):
+for key, value in sorted(teamRankOrder.items(), key=lambda item: item[1], reverse=True):
     print('%s. %s: %s' % (rank, key, value))
     rank = rank + 1
 
