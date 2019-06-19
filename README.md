@@ -20,6 +20,14 @@ Huge thank you to Sumedha Mehta, [whose article here helped teach me how to scra
 
 `python RankingSystem.py`
 
+- If you are running this on Python 2.7, replace 
+
+`from urllib.request import urlopen` 
+
+with 
+
+`from urllib2 import urlopen`
+
 That's it so far! It'll print the rankings. A lot is planned but again, it's garbage
 
 Current (simple) calculation puts Clemson first, UConn last, and Iowa ahead of everyone they should be ahead of. I may call this a complete system now.
