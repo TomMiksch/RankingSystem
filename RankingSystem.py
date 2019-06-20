@@ -45,8 +45,11 @@ def fcsGames(team):
 
     return (fcs_games_played * .09)
 
-# Gather the YPG allowed by each team
-def calcDefYPG(team):
+# Basic formula to scrape sports-reference
+# Team is the team being analyzed
+# criteria is the data-stat to be scraped
+# wanted_row is Offense(0), Defense(1), or Difference(2)
+def scrapeFormula(team, criteria, wanted_row):
     teamNameLowerCase = team.abbreviation
 
     url = "https://www.sports-reference.com/cfb/schools/" + \
@@ -55,26 +58,38 @@ def calcDefYPG(team):
 
     soup = BeautifulSoup(page, features="lxml")
     table = soup.find("tbody")
-    yards_given_up_per_game = {'opp_tot_yds'}
+    search = {criteria}
+    count = 0
 
     rows = table.find_all('tr')
     for row in rows:
-        for y in yards_given_up_per_game:
-            cell = row.find("td",{"data-stat": y})
-            if (cell != None):
+        for t in search:
+            cell = row.find("td",{"data-stat": t})
+            if (cell != None and count == wanted_row):
                 a = cell.text.strip().encode()
                 text = a.decode("utf-8")
+        count = count + 1
 
-    total_yards = float(text)
+    result = float(text)
 
-    return total_yards
+    return result
+
+# Gather the YPG allowed by each team
+def scrapeYPGDiff(team):
+    return scrapeFormula(team, "tot_yds", 2)
+
+def scrapeTurnoverBattle(team):
+    turnover_diff = scrapeFormula(team, "turnovers", 2)
+
+    return turnover_diff * -1
 
 # Calculate the ranking score for each team
 def calculateRankScore(team):
     calc_wins = (team.wins + power5Wins(team) - fcsGames(team)) * .2
-    ypg_diff = (team.yards - calcDefYPG(team)) * .01
+    ypg_diff = scrapeYPGDiff(team) * .01
     ppg_diff = (team.points_per_game - team.points_against_per_game) * .15
-    total = calc_wins + ypg_diff + ppg_diff
+    turnover_diff = scrapeTurnoverBattle(team) * .07
+    total = calc_wins + ypg_diff + ppg_diff + turnover_diff
     print(team.name + "'s score: " + str(total))
     return total
 
@@ -91,4 +106,4 @@ for key, value in sorted(teamRankOrder.items(), key=lambda item: item[1], revers
 stop = time.time()
 totalMinutes = ((stop - start)/60)
 remainingSeconds = (stop - start) % 60
-print('runtime - %.0f:%.0f' % (totalMinutes, remainingSeconds))
+print('runtime - %.0f:%02.0f' % (totalMinutes, remainingSeconds))
