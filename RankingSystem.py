@@ -58,16 +58,15 @@ def scrapeFormula(team, criteria, wanted_row):
 
     soup = BeautifulSoup(page, features="lxml")
     table = soup.find("tbody")
-    search = {criteria}
     count = 0
 
     rows = table.find_all('tr')
     for row in rows:
-        for t in search:
-            cell = row.find("td",{"data-stat": t})
-            if (cell != None and count == wanted_row):
-                a = cell.text.strip().encode()
-                text = a.decode("utf-8")
+        cell = row.find("td", {"data-stat": str(criteria)})
+        if (cell != None and count == wanted_row):
+            a = cell.text.strip().encode()
+            text = a.decode("utf-8")
+        
         count = count + 1
 
     result = float(text)
