@@ -9,6 +9,7 @@ import pandas as pd
 from datetime import datetime
 import time
 import collections
+import csv
 
 # Start timing
 start = time.time()
@@ -94,12 +95,14 @@ def calculateRankScore(team):
 
 # Main function
 for team in teams:
-    teamRankOrder[team.name] = calculateRankScore(team)
+    teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
 
-# Output results
-for key, value in sorted(teamRankOrder.items(), key=lambda item: item[1], reverse=True):
-    print('%s. %s: %s' % (rank, key, value))
-    rank = rank + 1
+with open("rankings.csv", "w") as outfile:
+    print("start csv file")
+    csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
+    for row_cells in teamRankOrder.values():
+        csvwriter.writerow(row_cells)
+    print("stop csv file")
 
 # End timing and output how long it took
 stop = time.time()
