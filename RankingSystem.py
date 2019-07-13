@@ -11,6 +11,7 @@ import time
 import collections
 import csv
 import sys
+import os
 
 # Start timing
 start = time.time()
@@ -20,6 +21,12 @@ yearToCalculate = datetime.now().year - 1
 if (len(sys.argv) > 1):
     yearToCalculate = sys.argv[1]
 
+# Create directory for placing the output files
+output_dir = str(os.getcwd()) + "/output"
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
+
+# Variables and whatnot
 teams = Teams(year=str(yearToCalculate))
 teamRankOrder = collections.OrderedDict()
 rank = 1
@@ -104,7 +111,7 @@ def calculateRankScore(team):
 for team in teams:
     teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
 
-with open("rankings_" + str(yearToCalculate) + ".csv", "w") as outfile:
+with open(output_dir + "/rankings_" + str(yearToCalculate) + ".csv", "w") as outfile:
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
     for row_cells in teamRankOrder.values():
         csvwriter.writerow(row_cells)
