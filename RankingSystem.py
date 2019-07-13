@@ -10,11 +10,17 @@ from datetime import datetime
 import time
 import collections
 import csv
+import sys
 
 # Start timing
 start = time.time()
 
-teams = Teams()
+# Default year if none is given
+yearToCalculate = datetime.now().year - 1
+if (len(sys.argv) > 1):
+    yearToCalculate = sys.argv[1]
+
+teams = Teams(year=str(yearToCalculate))
 teamRankOrder = collections.OrderedDict()
 rank = 1
 
@@ -23,11 +29,12 @@ def power5Wins(team):
     power_5_win_score = 0
     team_schedule = Schedule(team.abbreviation)
     for game in team_schedule:
-        if (game.opponent_conference == 'ACC' or
-            game.opponent_conference == 'Big Ten' or
-            game.opponent_conference == 'SEC' or
-            game.opponent_conference == 'Pac-12' or
-            game.opponent_conference == 'Big 12' or
+        opp_conference = game.opponent_conference
+        if (opp_conference == 'ACC' or
+            opp_conference == 'Big Ten' or
+            opp_conference == 'SEC' or
+            opp_conference == 'Pac-12' or
+            opp_conference == 'Big 12' or
             game.opponent_abbr == 'notre-dame'):
             if (game.result == 'Win'):
                 power_5_win_score = power_5_win_score + 1
@@ -97,12 +104,10 @@ def calculateRankScore(team):
 for team in teams:
     teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
 
-with open("rankings.csv", "w") as outfile:
-    print("start csv file")
+with open("rankings_" + str(yearToCalculate) + ".csv", "w") as outfile:
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
     for row_cells in teamRankOrder.values():
         csvwriter.writerow(row_cells)
-    print("stop csv file")
 
 # End timing and output how long it took
 stop = time.time()

@@ -16,9 +16,9 @@ Huge thank you to Sumedha Mehta, [whose article here helped teach me how to scra
 
 `pip install sportsreference`
 
-- Then run the script
+- Then run the script in your terminal with the year you would like to calculate. Will default to previous year if no year declared
 
-`python RankingSystem.py`
+`python RankingSystem.py 2018`
 
 - If you are running this on Python 2.7, replace 
 
