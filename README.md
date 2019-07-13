@@ -28,6 +28,6 @@ with
 
 `from urllib2 import urlopen`
 
-That's it so far! It'll print the rankings. A lot is planned but again, it's garbage
+That's it so far! It'll print the rankings to a csv. A lot is planned but again, it's garbage
 
 Current (simple) calculation puts Clemson first, UConn last, and Iowa ahead of everyone they should be ahead of. I may call this a complete system now.
