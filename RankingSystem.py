@@ -21,7 +21,6 @@ yearToCalculate = datetime.now().year - 1
 if (len(sys.argv) > 1):
     yearToCalculate = sys.argv[1]
 
-# Create directory for placing the output files
 output_dir = str(os.getcwd()) + "/output"
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
@@ -32,9 +31,13 @@ teamRankOrder = collections.OrderedDict()
 rank = 1
 
 # Give a bonus for beating a Power 5 Conference team (or Notre Dame)
-def power5Wins(team):
+# Lose points for playing an FCS team, and double those points lost if you lose
+# Get some bonus points for playing higher ranked opponents, and even more for winning
+def gameByGame(team):
+    team_schedule = Schedule(team.abbreviation,year=str(yearToCalculate))
     power_5_win_score = 0
-    team_schedule = Schedule(team.abbreviation)
+    fcs_games_played_score = 0
+    opp_rank_score = 0
     for game in team_schedule:
         opp_conference = game.opponent_conference
         if (opp_conference == 'ACC' or
@@ -45,20 +48,16 @@ def power5Wins(team):
             game.opponent_abbr == 'notre-dame'):
             if (game.result == 'Win'):
                 power_5_win_score = power_5_win_score + 1
+        if (opp_conference == 'Non-DI School'):
+            fcs_games_played_score = fcs_games_played_score + 1
+            if (game.result == 'Loss'):
+                fcs_games_played_score = fcs_games_played_score + 1
+        if (game.opponent_rank != None):
+            opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
+            if (game.result == 'Win'):
+                opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
 
-    return (power_5_win_score * .3)
-
-# Lose points for playing an FCS team, and double those points lost if you lose
-def fcsGames(team):
-    fcs_games_played = 0
-    team_schedule = Schedule(team.abbreviation)
-    for game in team_schedule:
-        if (game.opponent_conference == 'Non-DI School'):
-            fcs_games_played = fcs_games_played + 1
-        if (game.result == 'Loss'):
-            fcs_games_played = fcs_games_played + 1
-
-    return (fcs_games_played * .09)
+    return [(power_5_win_score * .3), (fcs_games_played_score * .09), (opp_rank_score * .1)]
 
 # Basic formula to scrape sports-reference
 # Team is the team being analyzed
@@ -68,7 +67,7 @@ def scrapeFormula(team, criteria, wanted_row):
     teamNameLowerCase = team.abbreviation
 
     url = "https://www.sports-reference.com/cfb/schools/" + \
-        teamNameLowerCase.lower() + "/2018.html"
+        teamNameLowerCase.lower() + "/" + str(yearToCalculate) + ".html"
     page = urlopen(url).read()
 
     soup = BeautifulSoup(page, features="lxml")
@@ -99,7 +98,8 @@ def scrapeTurnoverBattle(team):
 
 # Calculate the ranking score for each team
 def calculateRankScore(team):
-    calc_wins = (team.wins + power5Wins(team) - fcsGames(team)) * .2
+    schedule_score = gameByGame(team)
+    calc_wins = (team.wins + schedule_score[0] - schedule_score[1] + schedule_score[2]) * .2
     ypg_diff = scrapeYPGDiff(team) * .01
     ppg_diff = (team.points_per_game - team.points_against_per_game) * .15
     turnover_diff = scrapeTurnoverBattle(team) * .07
