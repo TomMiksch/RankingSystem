@@ -21,6 +21,7 @@ yearToCalculate = datetime.now().year - 1
 if (len(sys.argv) > 1):
     yearToCalculate = sys.argv[1]
 
+# Create output directory
 output_dir = str(os.getcwd()) + "/output"
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
@@ -91,6 +92,7 @@ def scrapeFormula(team, criteria, wanted_row):
 def scrapeYPGDiff(team):
     return scrapeFormula(team, "tot_yds", 2)
 
+# Gather the turnover difference
 def scrapeTurnoverBattle(team):
     turnover_diff = scrapeFormula(team, "turnovers", 2)
 
@@ -111,6 +113,7 @@ def calculateRankScore(team):
 for team in teams:
     teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
 
+# Write results to output file
 with open(output_dir + "/rankings_" + str(yearToCalculate) + ".csv", "w") as outfile:
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
     for row_cells in teamRankOrder.values():
