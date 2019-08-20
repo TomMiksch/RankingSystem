@@ -1,11 +1,8 @@
-from sportsreference.ncaaf.boxscore import Boxscore
-from sportsreference.ncaaf.boxscore import Boxscores
 from sportsreference.ncaaf.teams import Team
 from sportsreference.ncaaf.teams import Teams
 from sportsreference.ncaaf.schedule import Schedule
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import pandas as pd
 from datetime import datetime
 import time
 import collections
