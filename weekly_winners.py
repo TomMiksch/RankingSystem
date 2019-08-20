@@ -31,11 +31,11 @@ def compareTeams(team1, team2):
     team2_abbr = None
 
     for team in teams:
-        print(team1.replace(" ", "-").upper() + " " + team.abbreviation)
-        if (team1 == team.name or team1.lower() == team.abbreviation.replace("-", " ").lower()):
+        # print(team1.replace(" ", "-").upper() + " " + str(team.abbreviation))
+        if (team1 == str(team.name) or team1.lower() == str(team.abbreviation.replace("-", " ").lower())):
             team1_abbr = team.name
 
-        if (team2 == team.name or team2.lower() == team.abbreviation.replace("-", " ").lower()):
+        elif (team2 == str(team.name) or team2.lower() == str(team.abbreviation.replace("-", " ").lower())):
             team2_abbr = team.name
 
     with open("output\\rankings_" + currentYear + ".csv", "r") as csvFile:
@@ -86,14 +86,15 @@ def getScrapeUrl():
                 winner = row.find("td", {"data-stat": "winner_school_name"})
                 a = winner.text.strip().encode()
                 winner_name = a.decode("utf-8")
-                if (winner_name.startswith("(")): 
-                    winner_name = winner_name.split(")", 1)[1]
+                if (winner_name.startswith("(")):
+                    winner_name = winner_name.split(") ", 1)[0]
+                    print(winner_name)
 
                 loser = row.find("td", {"data-stat": "loser_school_name"})
                 a = loser.text.strip().encode()
                 loser_name = a.decode("utf-8")
                 if (loser_name.startswith("(")): 
-                    loser_name = loser_name.split(")", 1)[1]
+                    loser_name = loser_name.split(") ", 1)[1]
         
                 compareTeams(winner_name, loser_name)
 
