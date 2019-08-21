@@ -3,6 +3,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime
 import time
+import collections
 import sys
 import csv
 import os
@@ -10,7 +11,12 @@ import os
 # Start timing
 start = time.time()
 
-# Default year if none is given, along with week
+# Create output directory
+output_dir = str(os.getcwd()) + "/output"
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
+
+# Default year if none is given, along with week and rankings year
 currentYear = datetime.now().year - 1
 week = 1
 rank_year = datetime.now().year - 1
@@ -19,55 +25,63 @@ if (len(sys.argv) > 3):
     week = sys.argv[2]
     rank_year = sys.argv[3]
 
-    
+# Get all teams
+teams = Teams(year=str(rank_year))
 
-teams = Teams(year=str(currentYear))
+# OrderedDict to track everything for CSV
+winnerTracker = collections.OrderedDict()
 
 # Get the winning team name
-def compareTeams(team1, team2):
-    winner_score = None
-    loser_score = None
+def compareTeams(team1, team2, counter):
+    team1_score = None
+    team2_score = None
     team1_abbr = None
     team2_abbr = None
+    winner = team1
+    loser = team2
+    differential = -1
 
     for team in teams:
-        # print(team1.replace(" ", "-").upper() + " " + str(team.abbreviation))
-        if (team1 == str(team.name) or team1.lower() == str(team.abbreviation.replace("-", " ").lower())):
+        if (team1 == str(team.name) 
+          or team1.replace("-", " ").lower() == str(team.abbreviation.replace("-", " ").lower())):
             team1_abbr = team.name
 
-        elif (team2 == str(team.name) or team2.lower() == str(team.abbreviation.replace("-", " ").lower())):
+        elif (team2 == str(team.name) 
+          or team2.replace("-", " ").lower() == str(team.abbreviation.replace("-", " ").lower())):
             team2_abbr = team.name
 
-    with open("output\\rankings_" + currentYear + ".csv", "r") as csvFile:
+    with open("output\\rankings_" + rank_year + ".csv", "r") as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if (row[0] == team1_abbr):
-                winner_score = float(row[2])
-                # print("team1: " + team1_abbr)
-                # print(team1_abbr + ": " + str(winner_score))
+                team1_score = float(row[2])
 
             if (row[0] == team2_abbr):
-                loser_score = float(row[2])
-                # print("team2: " + team2_abbr)
-                # print(team2_abbr + ": " + str(loser_score))
+                team2_score = float(row[2])
 
-        if (winner_score == None and loser_score == None):
-            print("Neither team found...")
+        if (team1_score == None and team2_score == None):
+            print("Neither " + team1 + " or " + team2 + " found")
 
-        elif (winner_score == None):
-            print("Winner by default: " + team2)
+        elif (team1_score == None):
+            winner = team2
+            loser = team1
 
-        elif (loser_score == None):
-            print("Winner by default: " + team1)
+        elif (team2_score == None):
+            # Just to make it clear this case was thought about
+            differential = -1
 
-        elif (winner_score > loser_score):
-            print("Winner: " + team1 + " Loser: " + team2)
+        elif (team1_score > team2_score):
+            differential = team1_score - team2_score
 
-        elif (winner_score < loser_score):
-            print("Winner: " + team2 + " Loser: " + team1)
+        elif (team1_score < team2_score):
+            winner = team2
+            loser = team1
+            differential = team2_score - team1_score
 
         else:
-            print("A FUCKING TIE. GOD DAMMIT " + team1 + ", " + team2)
+            differential = team2_score - team1_score
+
+    winnerTracker[counter] = [winner, loser, differential]
 
 def getScrapeUrl():
     url = "https://www.sports-reference.com/cfb/years/" + currentYear + "-schedule.html"
@@ -75,6 +89,8 @@ def getScrapeUrl():
 
     soup = BeautifulSoup(page, features="lxml")
     table = soup.find("tbody")
+
+    counter = 0
 
     rows = table.find_all('tr')
     for row in rows:
@@ -87,18 +103,25 @@ def getScrapeUrl():
                 a = winner.text.strip().encode()
                 winner_name = a.decode("utf-8")
                 if (winner_name.startswith("(")):
-                    winner_name = winner_name.split(") ", 1)[0]
-                    print(winner_name)
+                    winner_name = winner_name.split(")\xa0")[1]
 
                 loser = row.find("td", {"data-stat": "loser_school_name"})
                 a = loser.text.strip().encode()
                 loser_name = a.decode("utf-8")
                 if (loser_name.startswith("(")): 
-                    loser_name = loser_name.split(") ", 1)[1]
+                    loser_name = loser_name.split(")\xa0")[1]
         
-                compareTeams(winner_name, loser_name)
+                compareTeams(winner_name, loser_name, counter)
+
+                counter = counter + 1
 
 getScrapeUrl()
+
+with open(output_dir + "/winners_" + str(currentYear) + "_week_" + str(week) + ".csv", "w") as outfile:
+    csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
+    csvwriter.writerow(["WINNER", "LOSER", "DIFFERENCE"])
+    for row_cells in winnerTracker.values():
+        csvwriter.writerow(row_cells)
 
 # End timing and output how long it took
 stop = time.time()
