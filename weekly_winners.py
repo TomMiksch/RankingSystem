@@ -7,23 +7,38 @@ import collections
 import sys
 import csv
 import os
+import argparse
 
 # Start timing
 start = time.time()
+
+# Argument Parser
+parser = argparse.ArgumentParser(description = "Pick Weekly Winners")
+parser.add_argument("-y","--year", 
+    dest="currentYear", 
+    required=False, 
+    help="Year to rank teams", 
+    default=datetime.now().year - 1)
+parser.add_argument("-w","--week", 
+    dest="week", 
+    required=False, 
+    help="Week to rank teams", 
+    default=1)
+parser.add_argument("-r","--rank", 
+    dest="rank_year", 
+    required=False, 
+    help="Set of rankings to use", 
+    default=datetime.now().year - 1)
+
+args = parser.parse_known_args()
+currentYear = args[0].currentYear
+week = args[0].week
+rank_year = args[0].rank_year
 
 # Create output directory
 output_dir = str(os.getcwd()) + "/output"
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
-
-# Default year if none is given, along with week and rankings year
-currentYear = datetime.now().year - 1
-week = 1
-rank_year = datetime.now().year - 1
-if (len(sys.argv) > 3):
-    currentYear = sys.argv[1]
-    week = sys.argv[2]
-    rank_year = sys.argv[3]
 
 # Get all teams
 teams = Teams(year=str(rank_year))
@@ -50,7 +65,7 @@ def compareTeams(team1, team2, counter):
           or team2.replace("-", " ").lower() == str(team.abbreviation.replace("-", " ").lower())):
             team2_abbr = team.name
 
-    with open("output\\rankings_" + rank_year + ".csv", "r") as csvFile:
+    with open("output\\rankings_" + str(rank_year) + ".csv", "r") as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if (row[0] == team1_abbr):
@@ -84,7 +99,7 @@ def compareTeams(team1, team2, counter):
     winnerTracker[counter] = [winner, loser, (differential/.15)]
 
 def getScrapeUrl():
-    url = "https://www.sports-reference.com/cfb/years/" + currentYear + "-schedule.html"
+    url = "https://www.sports-reference.com/cfb/years/" + str(currentYear) + "-schedule.html"
     page = urlopen(url).read() 
 
     soup = BeautifulSoup(page, features="lxml")

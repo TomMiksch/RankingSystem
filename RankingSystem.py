@@ -9,14 +9,26 @@ import collections
 import csv
 import sys
 import os
+import argparse
 
 # Start timing
 start = time.time()
 
 # Default year if none is given
-yearToCalculate = datetime.now().year - 1
-if (len(sys.argv) > 1):
-    yearToCalculate = sys.argv[1]
+parser = argparse.ArgumentParser(description = "Rank FBS Programs")
+parser.add_argument("-y","--year", 
+    dest="yearToCalculate", 
+    required=False, 
+    help="Year to rank teams", 
+    default=datetime.now().year - 1)
+
+args = parser.parse_known_args()
+yearToCalculate = args[0].yearToCalculate
+
+# Default year if none is given
+# yearToCalculate = datetime.now().year - 1
+# if (len(sys.argv) > 1):
+#     yearToCalculate = sys.argv[1]
 
 # Create output directory
 output_dir = str(os.getcwd()) + "/output"

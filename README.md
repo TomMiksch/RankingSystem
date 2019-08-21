@@ -16,9 +16,9 @@ Huge thank you to Sumedha Mehta, [whose article here helped teach me how to scra
 
 `pip install sportsreference`
 
-- Then run the script in your terminal with the year you would like to calculate. Will default to previous year if no year declared
+- Then run the script in your terminal with the year you would like to calculate. Will default to previous year if no year declared. Year can be declared as `-y=XXXX` or `--year=XXXX`
 
-`python RankingSystem.py 2018`
+`python RankingSystem.py -y=2018`
 
 - If you are running this on Python 2.7, replace 
 
@@ -37,7 +37,7 @@ Current (simple) calculation puts Clemson first, UConn last, and Iowa ahead of e
 
 - Run the script in terminal with the season, week, and set of rankings you'd like to use. For example, to run the rankings on Week 2 of the 2019 season using the 2018 rankings, enter
 
-`python weekly_winners.py 2019 2 2018`
+`python weekly_winners.py -y=2019 -w=2 -r2018`
 
 into your terminal
 
