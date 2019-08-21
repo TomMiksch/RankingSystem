@@ -103,7 +103,7 @@ def calculateRankScore(team):
     ppg_diff = (team.points_per_game - team.points_against_per_game) * .15
     turnover_diff = scrapeTurnoverBattle(team) * .07
     total = calc_wins + ypg_diff + ppg_diff + turnover_diff
-    print(team.abbreviation + "'s score: " + str(total))
+    print(team.name + "'s score: " + str(total))
     return total
 
 # Main function
