@@ -57,7 +57,7 @@ def compareTeams(team1, team2, counter):
                 team1_score = float(row[2])
 
             if (row[0] == team2_abbr):
-                team2_score = float(row[2])
+                team2_score = float(row[2]) + .45
 
         if (team1_score == None and team2_score == None):
             print("Neither " + team1 + " or " + team2 + " found")
@@ -71,17 +71,17 @@ def compareTeams(team1, team2, counter):
             differential = -1
 
         elif (team1_score > team2_score):
-            differential = team1_score - team2_score
+            differential = (team1_score - team2_score)
 
         elif (team1_score < team2_score):
             winner = team2
             loser = team1
-            differential = team2_score - team1_score
+            differential = (team2_score - team1_score)
 
         else:
             differential = team2_score - team1_score
 
-    winnerTracker[counter] = [winner, loser, differential]
+    winnerTracker[counter] = [winner, loser, (differential/.15)]
 
 def getScrapeUrl():
     url = "https://www.sports-reference.com/cfb/years/" + currentYear + "-schedule.html"
