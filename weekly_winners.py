@@ -54,7 +54,7 @@ def compareTeams(team1, team2, counter):
     team2_abbr = None
     winner = team1
     loser = team2
-    differential = -1
+    differential = None
 
     for team in teams:
         if (team1 == str(team.name) 
@@ -83,20 +83,20 @@ def compareTeams(team1, team2, counter):
 
         elif (team2_score == None):
             # Just to make it clear this case was thought about
-            differential = -1
+            differential = None
 
         elif (team1_score > team2_score):
-            differential = (team1_score - team2_score)
+            differential = (team1_score - team2_score)/.15
 
         elif (team1_score < team2_score):
             winner = team2
             loser = team1
-            differential = (team2_score - team1_score)
+            differential = (team2_score - team1_score)/.15
 
         else:
-            differential = team2_score - team1_score
+            differential = (team2_score - team1_score)/.15
 
-    winnerTracker[counter] = [winner, loser, (differential/.15)]
+    winnerTracker[counter] = [winner, loser, differential]
 
 def getScrapeUrl():
     url = "https://www.sports-reference.com/cfb/years/" + str(currentYear) + "-schedule.html"

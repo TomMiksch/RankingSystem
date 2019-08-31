@@ -25,11 +25,6 @@ parser.add_argument("-y","--year",
 args = parser.parse_known_args()
 yearToCalculate = args[0].yearToCalculate
 
-# Default year if none is given
-# yearToCalculate = datetime.now().year - 1
-# if (len(sys.argv) > 1):
-#     yearToCalculate = sys.argv[1]
-
 # Create output directory
 output_dir = str(os.getcwd()) + "/output"
 if not os.path.exists(output_dir):
