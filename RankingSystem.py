@@ -20,7 +20,7 @@ parser.add_argument("-y","--year",
     dest="yearToCalculate", 
     required=False, 
     help="Year to rank teams", 
-    default=datetime.now().year - 1)
+    default=datetime.now().year)
 
 args = parser.parse_known_args()
 yearToCalculate = args[0].yearToCalculate
@@ -70,6 +70,7 @@ def gameByGame(team):
 # wanted_row is Offense(0), Defense(1), or Difference(2)
 def scrapeFormula(team, criteria, wanted_row):
     teamNameLowerCase = team.abbreviation
+    text = "1"
 
     url = "https://www.sports-reference.com/cfb/schools/" + \
         teamNameLowerCase.lower() + "/" + str(yearToCalculate) + ".html"
