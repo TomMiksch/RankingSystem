@@ -27,13 +27,19 @@ parser.add_argument("-w","--week",
 parser.add_argument("-r","--rank", 
     dest="rank_year", 
     required=False, 
-    help="Set of rankings to use", 
+    help="Year from the set of rankings to use", 
     default=datetime.now().year - 1)
+parser.add_argument("-rw","--rank-week", 
+    dest="rank_week", 
+    required=False, 
+    help="Week from the set of rankings to use", 
+    default=1)
 
 args = parser.parse_known_args()
 currentYear = args[0].currentYear
 week = args[0].week
 rank_year = args[0].rank_year
+rank_week = args[0].rank_week
 
 # Create output directory
 output_dir = str(os.getcwd()) + "/output"
@@ -65,7 +71,7 @@ def compareTeams(team1, team2, counter):
           or team2.replace("-", " ").lower() == str(team.abbreviation.replace("-", " ").lower())):
             team2_abbr = team.name
 
-    with open("output\\rankings_" + str(rank_year) + ".csv", "r") as csvFile:
+    with open("output\\rankings_" + str(rank_year) + "_week_" + str(rank_week) + ".csv", "r") as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
             if (row[0] == team1_abbr):

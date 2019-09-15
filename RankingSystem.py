@@ -21,9 +21,15 @@ parser.add_argument("-y","--year",
     required=False, 
     help="Year to rank teams", 
     default=datetime.now().year)
+parser.add_argument("-w","--week", 
+    dest="week", 
+    required=False, 
+    help="Week of the rankings", 
+    default=0)
 
 args = parser.parse_known_args()
 yearToCalculate = args[0].yearToCalculate
+week = args[0].week
 
 # Create output directory
 output_dir = str(os.getcwd()) + "/output"
@@ -77,7 +83,8 @@ def scrapeFormula(team, criteria, wanted_row):
     page = urlopen(url).read()
 
     soup = BeautifulSoup(page, features="lxml")
-    table = soup.find("tbody")
+    all_team = soup.find("div", {"id": "all_team"})
+    table = all_team.find("tbody")
     count = 0
 
     rows = table.find_all('tr')
@@ -119,7 +126,7 @@ for team in teams:
     teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
 
 # Write results to output file
-with open(output_dir + "/rankings_" + str(yearToCalculate) + ".csv", "w") as outfile:
+with open(output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + ".csv", "w") as outfile:
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
     for row_cells in teamRankOrder.values():
         csvwriter.writerow(row_cells)
