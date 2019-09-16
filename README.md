@@ -16,9 +16,9 @@ Huge thank you to Sumedha Mehta, [whose article here helped teach me how to scra
 
 `pip install sportsreference`
 
-- Then run the script in your terminal with the year you would like to calculate. Will default to previous year if no year declared. Year can be declared as `-y=XXXX` or `--year=XXXX`
+- Then run the script in your terminal with the year and week you would like to calculate. Will default to previous year if no year declared. Year can be declared as `-y=XXXX` or `--year=XXXX`, week can be referenced as `-w=X` or `--week=X`
 
-`python RankingSystem.py -y=2018`
+`python RankingSystem.py -y=2018 -w=4`
 
 - If you are running this on Python 2.7, replace 
 
@@ -35,10 +35,19 @@ Current (simple) calculation puts Clemson first, UConn last, and Iowa ahead of e
 
 - Sports-Reference counts what most people refer to as "Week 0" as "Week 1" and that is reflected the use of this script
 
-- Run the script in terminal with the season, week, and set of rankings you'd like to use. For example, to run the rankings on Week 2 of the 2019 season using the 2018 rankings, enter
+- Run the script in terminal with the season, week, and set of rankings you'd like to use. For example, to run the rankings on Week 2 of the 2019 season using the 2018 week 2  rankings, enter
 
-`python weekly_winners.py -y=2019 -w=2 -r2018`
+`python weekly_winners.py -y=2019 -w=2 -r=2018 -rw=2`
 
 into your terminal
+
+- Output will be written to a csv file in the output folder
+
+## To Run The Results Script
+- This script will check the predictions from the week before compared to the actual results
+
+- Run the script in your terminal with the year and week you want to check as
+
+`python results.py -y=2019 -w=4`
 
 - Output will be written to a csv file in the output folder
