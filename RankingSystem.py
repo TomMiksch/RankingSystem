@@ -128,6 +128,7 @@ for team in teams:
 # Write results to output file
 with open(output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + ".csv", "w") as outfile:
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
+    csvwriter.writerow(["TEAM", "CONFERENCE", "POINTS"])
     for row_cells in teamRankOrder.values():
         csvwriter.writerow(row_cells)
 
