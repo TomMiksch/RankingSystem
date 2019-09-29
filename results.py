@@ -13,16 +13,16 @@ import argparse
 start = time.time()
 
 # Argument Parser
-parser = argparse.ArgumentParser(description = "Pick Weekly Winners")
+parser = argparse.ArgumentParser(description = "Compare predicitions to actual results")
 parser.add_argument("-y","--year", 
     dest="currentYear", 
     required=False, 
-    help="Year to rank teams", 
+    help="Year to grab data", 
     default=datetime.now().year - 1)
 parser.add_argument("-w","--week", 
     dest="week", 
     required=False, 
-    help="Week to rank teams", 
+    help="Week to grab data", 
     default=1)
 
 args = parser.parse_known_args()

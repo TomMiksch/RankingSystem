@@ -35,9 +35,9 @@ Current (simple) calculation puts Clemson first, UConn last, and Iowa ahead of e
 
 - Sports-Reference counts what most people refer to as "Week 0" as "Week 1" and that is reflected the use of this script
 
-- Run the script in terminal with the season, week, and set of rankings you'd like to use. For example, to run the rankings on Week 2 of the 2019 season using the 2018 week 2  rankings, enter
+- Run the script in terminal with the season and week you'd like to predict. For example, to run the rankings on Week 2 of the 2019 season, enter
 
-`python weekly_winners.py -y=2019 -w=2 -r=2018 -rw=2`
+`python weekly_winners.py -y=2019 -w=2`
 
 into your terminal
 
