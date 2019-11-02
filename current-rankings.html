@@ -1,8 +1,41 @@
-<table class="table table-bordered table-hover table-condensed sortable">
-    <thead><tr><th title="Field #1">TEAM</th>
-    <th title="Field #2">CONFERENCE</th>
-    <th title="Field #3">POINTS</th>
-    </tr></thead>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th {
+  text-align: left;
+  padding: 5px;
+  border: 1px solid black;
+  font-size: 20px;
+}
+
+td {
+  text-align: left;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+tr:nth-child(even) {
+  background-color: #b9b8b8
+}
+</style>
+
+<body>
+<h1>Click on the headers to sort!</h1>
+<table id="rankingsTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)" title="Team">TEAM</th>
+            <th onclick="sortTable(1)" title="Conference the team plays in">CONFERENCE</th>
+            <th onclick="sortTable(2)" title="Score by the system">POINTS</th>
+        </tr>
+    </thead>
     <tbody><tr>
     <td>Clemson</td>
     <td>ACC</td>
@@ -654,3 +687,73 @@
     <td align="right">-3.3981999999999997</td>
     </tr>
     </tbody></table>
+
+<script>
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("rankingsTable");
+        switching = true;
+        // Set the sorting direction to ascending:
+        dir = "asc";
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                // Start by saying there should be no switching:
+                shouldSwitch = false;
+                /* Get the two elements you want to compare,
+                one from current row and one from the next: */
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /* Check if the two rows should switch place,
+                based on the direction, asc or desc: */
+                if (dir == "asc") {
+                    if (n != 2 && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    } else if (n == 2 && Number(x.innerHTML.valueOf()) > Number(y.innerHTML.valueOf())) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (n != 2 && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    } else if (n == 2 && Number(x.innerHTML.valueOf()) < Number(y.innerHTML.valueOf())) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /* If a switch has been marked, make the switch
+                and mark that a switch has been done: */
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                // Each time a switch is done, increase this count by 1:
+                switchcount ++;
+            } else {
+                /* If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again. */
+                if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</head>
+</html>
+<!-- Special thanks to http://www.convertcsv.com/csv-to-html.htm for generating the table -->
+<!-- And thanks to https://www.w3schools.com/howto/howto_js_sort_table.asp for the sorting -->
