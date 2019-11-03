@@ -62,11 +62,11 @@ def compareTeams(team1, team2, counter):
     with open("output\\rankings_" + str(currentYear) + "_week_" + str(week) + ".csv", "r") as csvFile:
         reader = csv.reader(csvFile)
         for row in reader:
-            if (row[0] == team1_abbr):
-                team1_score = float(row[2])
+            if (row[1] == team1_abbr):
+                team1_score = float(row[3])
 
-            if (row[0] == team2_abbr):
-                team2_score = float(row[2]) + .45
+            if (row[1] == team2_abbr):
+                team2_score = float(row[3]) + .45
 
         if (team1_score == None and team2_score == None):
             print("Neither " + team1 + " or " + team2 + " found")

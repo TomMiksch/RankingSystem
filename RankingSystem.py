@@ -1,15 +1,15 @@
-from sportsreference.ncaaf.teams import Team
-from sportsreference.ncaaf.teams import Teams
-from sportsreference.ncaaf.schedule import Schedule
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-from datetime import datetime
-import time
+import argparse
 import collections
 import csv
-import sys
 import os
-import argparse
+import sys
+import time
+from datetime import datetime
+from urllib.request import urlopen
+
+from bs4 import BeautifulSoup
+from sportsreference.ncaaf.schedule import Schedule
+from sportsreference.ncaaf.teams import Team, Teams
 
 # Start timing
 start = time.time()
@@ -127,10 +127,13 @@ for team in teams:
 
 # Write results to output file
 with open(output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + ".csv", "w") as outfile:
+    teamRankOrderSorted = sorted(teamRankOrder.items(), key=lambda x: x[1][2], reverse=True)
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
-    csvwriter.writerow(["TEAM", "CONFERENCE", "POINTS"])
-    for row_cells in teamRankOrder.values():
-        csvwriter.writerow(row_cells)
+    counter = 1
+    csvwriter.writerow(["RANK", "TEAM", "CONFERENCE", "POINTS"])
+    for row_cells in teamRankOrderSorted:
+        csvwriter.writerow([counter, row_cells[1][0], row_cells[1][1], row_cells[1][2]])
+        counter = counter + 1
 
 # End timing and output how long it took
 stop = time.time()
