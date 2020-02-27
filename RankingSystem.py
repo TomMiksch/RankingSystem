@@ -2,8 +2,8 @@ import argparse
 import collections
 import csv
 import os
-import sys
 import time
+import generate_html
 from datetime import datetime
 from urllib.request import urlopen
 
@@ -125,15 +125,19 @@ def calculateRankScore(team):
 for team in teams:
     teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
 
+
+teamRankOrderSorted = sorted(teamRankOrder.items(), key=lambda x: x[1][2], reverse=True)
+
 # Write results to output file
 with open(output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + ".csv", "w") as outfile:
-    teamRankOrderSorted = sorted(teamRankOrder.items(), key=lambda x: x[1][2], reverse=True)
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
     counter = 1
     csvwriter.writerow(["RANK", "TEAM", "CONFERENCE", "POINTS"])
     for row_cells in teamRankOrderSorted:
         csvwriter.writerow([counter, row_cells[1][0], row_cells[1][1], row_cells[1][2]])
         counter = counter + 1
+
+generate_html.generateHTML(yearToCalculate, week, teamRankOrderSorted)
 
 # End timing and output how long it took
 stop = time.time()

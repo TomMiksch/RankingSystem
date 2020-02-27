@@ -1,10 +1,8 @@
-from sportsreference.ncaaf.teams import Teams
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime
 import time
 import collections
-import sys
 import csv
 import os
 import argparse
@@ -14,12 +12,12 @@ start = time.time()
 
 # Argument Parser
 parser = argparse.ArgumentParser(description = "Compare predicitions to actual results")
-parser.add_argument("-y","--year", 
+parser.add_argument("-y", "--year",
     dest="currentYear", 
     required=False, 
     help="Year to grab data", 
     default=datetime.now().year - 1)
-parser.add_argument("-w","--week", 
+parser.add_argument("-w", "--week",
     dest="week", 
     required=False, 
     help="Week to grab data", 

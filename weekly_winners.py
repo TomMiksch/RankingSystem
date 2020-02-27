@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import time
 import collections
-import sys
 import csv
 import os
 import argparse
