@@ -44,29 +44,31 @@ rank = 1
 # Give a bonus for beating a Power 5 Conference team (or Notre Dame)
 # Lose points for playing an FCS team, and double those points lost if you lose
 # Get some bonus points for playing higher ranked opponents, and even more for winning
+# Does not count games that were not played
 def gameByGame(team):
     team_schedule = Schedule(team.abbreviation,year=str(yearToCalculate))
     power_5_win_score = 0
     fcs_games_played_score = 0
     opp_rank_score = 0
     for game in team_schedule:
-        opp_conference = game.opponent_conference
-        if (opp_conference == 'ACC' or
-            opp_conference == 'Big Ten' or
-            opp_conference == 'SEC' or
-            opp_conference == 'Pac-12' or
-            opp_conference == 'Big 12' or
-            game.opponent_abbr == 'notre-dame'):
-            if (game.result == 'Win'):
-                power_5_win_score = power_5_win_score + 1
-        if (opp_conference == 'Non-DI School'):
-            fcs_games_played_score = fcs_games_played_score + 1
-            if (game.result == 'Loss'):
+        if (game.result == "Win" or game.result == "Loss"):
+            opp_conference = game.opponent_conference
+            if (opp_conference == 'ACC' or
+                opp_conference == 'Big Ten' or
+                opp_conference == 'SEC' or
+                opp_conference == 'Pac-12' or
+                opp_conference == 'Big 12' or
+                game.opponent_abbr == 'notre-dame'):
+                if (game.result == 'Win'):
+                    power_5_win_score = power_5_win_score + 1
+            if (opp_conference == 'Non-DI School'):
                 fcs_games_played_score = fcs_games_played_score + 1
-        if (game.opponent_rank != None):
-            opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
-            if (game.result == 'Win'):
+                if (game.result == 'Loss'):
+                    fcs_games_played_score = fcs_games_played_score + 1
+            if (game.opponent_rank != None):
                 opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
+                if (game.result == 'Win'):
+                    opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
 
     return [(power_5_win_score * .3), (fcs_games_played_score * .09), (opp_rank_score * .1)]
 
@@ -74,9 +76,10 @@ def gameByGame(team):
 # Team is the team being analyzed
 # criteria is the data-stat to be scraped
 # wanted_row is Offense(0), Defense(1), or Difference(2)
-def scrapeFormula(team, criteria, wanted_row):
+def scrapeFormula(team):
     teamNameLowerCase = team.abbreviation
-    text = "1"
+    ypg_diff = "1"
+    turnover_diff = "1"
 
     url = "https://www.sports-reference.com/cfb/schools/" + \
         teamNameLowerCase.lower() + "/" + str(yearToCalculate) + ".html"
@@ -89,34 +92,37 @@ def scrapeFormula(team, criteria, wanted_row):
 
     rows = table.find_all('tr')
     for row in rows:
-        cell = row.find("td", {"data-stat": str(criteria)})
-        if (cell != None and count == wanted_row):
-            a = cell.text.strip().encode()
-            text = a.decode("utf-8")
+        ypg_diff_cell = row.find("td", {"data-stat": "tot_yds"})
+        turnover_diff_cell = row.find("td", {"data-stat": "turnovers"})
+        if (ypg_diff_cell != None and count == 2):
+            a = ypg_diff_cell.text.strip().encode()
+            ypg_diff = a.decode("utf-8")
+        if (turnover_diff_cell != None and count == 2):
+            a = turnover_diff_cell.text.strip().encode()
+            turnover_diff = a.decode("utf-8")
         
         count = count + 1
 
-    result = float(text)
-
-    return result
+    return [float(ypg_diff), float(turnover_diff)]
 
 # Gather the YPG allowed by each team
-def scrapeYPGDiff(team):
-    return scrapeFormula(team, "tot_yds", 2)
+# def scrapeYPGDiff(team):
+#     return scrapeFormula(team, "tot_yds", 2)
 
-# Gather the turnover difference
-def scrapeTurnoverBattle(team):
-    turnover_diff = scrapeFormula(team, "turnovers", 2)
+# # Gather the turnover difference
+# def scrapeTurnoverBattle(team):
+#     turnover_diff = scrapeFormula(team, "turnovers", 2)
 
-    return turnover_diff * -1
+#     return turnover_diff * -1
 
 # Calculate the ranking score for each team
 def calculateRankScore(team):
     schedule_score = gameByGame(team)
     calc_wins = (team.wins + schedule_score[0] - schedule_score[1] + schedule_score[2]) * .2
-    ypg_diff = scrapeYPGDiff(team) * .01
     ppg_diff = (team.points_per_game - team.points_against_per_game) * .15
-    turnover_diff = scrapeTurnoverBattle(team) * .07
+    diff_scraper = scrapeFormula(team)
+    ypg_diff = diff_scraper[0] * .01
+    turnover_diff = diff_scraper[1] * -.07
     total = calc_wins + ypg_diff + ppg_diff + turnover_diff
     print(team.name + "'s score: " + str(total))
     return total

@@ -1,11 +1,13 @@
 import os
+import shutil
 
 output_dir = str(os.getcwd()) + "/webpages"
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 
 def generateHTML(yearToCalculate, week, teamRankOrderSorted):
-    with open(output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + "_webpage.html", "w") as htmlFile:
+    fileToOpen = output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + "_webpage.html"
+    with open(fileToOpen, "w") as htmlFile:
         htmlStart = """<!DOCTYPE html>
 <html>
 <head>
@@ -41,9 +43,10 @@ tr:nth-child(even) {
 <table id="rankingsTable">
     <thead>
         <tr>
-            <th onclick="sortTable(0)" title="Team">TEAM</th>
-            <th onclick="sortTable(1)" title="Conference the team plays in">CONFERENCE</th>
-            <th onclick="sortTable(2)" title="Score by the system">POINTS</th>
+            <th onclick="sortTable(0)" title="Overall rank">RANK</th>
+            <th onclick="sortTable(1)" title="Team">TEAM</th>
+            <th onclick="sortTable(2)" title="Conference the team plays in">CONFERENCE</th>
+            <th onclick="sortTable(3)" title="Score by the system">POINTS</th>
         </tr>
     </thead>
     <tbody>
@@ -52,12 +55,16 @@ tr:nth-child(even) {
         htmlFile.write(htmlTitle)
         htmlFile.write(htmlContinued)
 
+        count = 1
+
         for team in teamRankOrderSorted:
             htmlFile.write("<tr>")
+            htmlFile.write("<td>" + str(count) + "</td>")
             htmlFile.write("<td>" + team[1][0] + "</td>")
             htmlFile.write("<td>" + team[1][1] + "</td>")
             htmlFile.write("<td align=\"right\">" + str(team[1][2]) + "</td>")
             htmlFile.write("</tr>\n")
+            count = count + 1
 
         htmlEnd = """
         </tbody>
@@ -135,4 +142,4 @@ tr:nth-child(even) {
 """
         htmlFile.write(htmlEnd)
 
-
+    shutil.copy(fileToOpen, "current-rankings.html")
