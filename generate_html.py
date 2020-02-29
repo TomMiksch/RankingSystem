@@ -95,21 +95,21 @@ tr:nth-child(even) {
                 /* Check if the two rows should switch place,
                 based on the direction, asc or desc: */
                 if (dir == "asc") {
-                    if (n != 2 && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    if (n != 3 && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
                         // If so, mark as a switch and break the loop:
                         shouldSwitch = true;
                         break;
-                    } else if (n == 2 && Number(x.innerHTML.valueOf()) > Number(y.innerHTML.valueOf())) {
+                    } else if (n == 3 && Number(x.innerHTML.valueOf()) > Number(y.innerHTML.valueOf())) {
                         // If so, mark as a switch and break the loop:
                         shouldSwitch = true;
                         break;
                     }
                 } else if (dir == "desc") {
-                    if (n != 2 && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    if (n != 3 && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                         // If so, mark as a switch and break the loop:
                         shouldSwitch = true;
                         break;
-                    } else if (n == 2 && Number(x.innerHTML.valueOf()) < Number(y.innerHTML.valueOf())) {
+                    } else if (n == 3 && Number(x.innerHTML.valueOf()) < Number(y.innerHTML.valueOf())) {
                         // If so, mark as a switch and break the loop:
                         shouldSwitch = true;
                         break;
