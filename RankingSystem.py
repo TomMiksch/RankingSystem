@@ -8,8 +8,8 @@ from datetime import datetime
 from urllib.request import urlopen
 
 from bs4 import BeautifulSoup
-from sportsreference.ncaaf.schedule import Schedule
-from sportsreference.ncaaf.teams import Team, Teams
+from sportsipy.ncaaf.schedule import Schedule
+from sportsipy.ncaaf.teams import Teams
 
 # Start timing
 start = time.time()
@@ -129,18 +129,18 @@ def calculateRankScore(team):
 
 # Main function
 for team in teams:
-    teamRankOrder[team.name] = [team.name, str(team.conference).upper(), calculateRankScore(team)]
+    teamRankOrder[team.name] = [team.name, str(team.conference).upper(), team.wins, team.losses, calculateRankScore(team)]
 
 
-teamRankOrderSorted = sorted(teamRankOrder.items(), key=lambda x: x[1][2], reverse=True)
+teamRankOrderSorted = sorted(teamRankOrder.items(), key=lambda x: x[1][4], reverse=True)
 
 # Write results to output file
 with open(output_dir + "/rankings_" + str(yearToCalculate) + "_week_" + str(week) + ".csv", "w") as outfile:
     csvwriter = csv.writer(outfile, delimiter=",", lineterminator="\n")
     counter = 1
-    csvwriter.writerow(["RANK", "TEAM", "CONFERENCE", "POINTS"])
+    csvwriter.writerow(["RANK", "TEAM", "CONFERENCE", "WINS", "LOSSES", "POINTS"])
     for row_cells in teamRankOrderSorted:
-        csvwriter.writerow([counter, row_cells[1][0], row_cells[1][1], row_cells[1][2]])
+        csvwriter.writerow([counter, row_cells[1][0], row_cells[1][1], row_cells[1][2], row_cells[1][3], row_cells[1][4]])
         counter = counter + 1
 
 generate_html.generateHTML(yearToCalculate, week, teamRankOrderSorted)

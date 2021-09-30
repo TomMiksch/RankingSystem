@@ -62,7 +62,7 @@ tr:nth-child(even) {
             htmlFile.write("<td>" + str(count) + "</td>")
             htmlFile.write("<td>" + team[1][0] + "</td>")
             htmlFile.write("<td>" + team[1][1] + "</td>")
-            htmlFile.write("<td align=\"right\">" + str(team[1][2]) + "</td>")
+            htmlFile.write("<td align=\"right\">" + str(team[1][4]) + "</td>")
             htmlFile.write("</tr>\n")
             count = count + 1
 

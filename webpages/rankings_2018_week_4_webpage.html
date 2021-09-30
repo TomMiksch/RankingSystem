@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th {
+    text-align: left;
+    padding: 5px;
+    border: 1px solid black;
+    font-size: 20px;
+}
+
+td {
+    text-align: left;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+tr:nth-child(even) {
+    background-color: #b9b8b8
+}
+</style>
+
+<body>
+
+<h1>Rankings: Week 4 of 2018</h1>
+<h3>Click on the headers to sort!</h3>
+<table id="rankingsTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)" title="Overall rank">RANK</th>
+            <th onclick="sortTable(1)" title="Team">TEAM</th>
+            <th onclick="sortTable(2)" title="Conference the team plays in">CONFERENCE</th>
+            <th onclick="sortTable(3)" title="Score by the system">POINTS</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr><td>1</td><td>Clemson</td><td>ACC</td><td align="right">10.9756</td></tr>
+<tr><td>2</td><td>Alabama</td><td>SEC</td><td align="right">9.794</td></tr>
+<tr><td>3</td><td>Ohio State</td><td>BIG-TEN</td><td align="right">7.3792</td></tr>
+<tr><td>4</td><td>Utah State</td><td>MWC</td><td align="right">7.272</td></tr>
+<tr><td>5</td><td>Georgia</td><td>SEC</td><td align="right">7.1362000000000005</td></tr>
+<tr><td>6</td><td>Appalachian State</td><td>SUN-BELT</td><td align="right">6.9324</td></tr>
+<tr><td>7</td><td>Fresno State</td><td>MWC</td><td align="right">6.670599999999999</td></tr>
+<tr><td>8</td><td>Cincinnati</td><td>AMERICAN</td><td align="right">6.541</td></tr>
+<tr><td>9</td><td>Oklahoma</td><td>BIG-12</td><td align="right">6.524600000000001</td></tr>
+<tr><td>10</td><td>UCF</td><td>AMERICAN</td><td align="right">6.513600000000001</td></tr>
+<tr><td>11</td><td>Michigan</td><td>BIG-TEN</td><td align="right">6.4494</td></tr>
+<tr><td>12</td><td>Notre Dame</td><td>INDEPENDENT</td><td align="right">6.068199999999999</td></tr>
+<tr><td>13</td><td>Washington State</td><td>PAC-12</td><td align="right">5.8646</td></tr>
+<tr><td>14</td><td>Florida</td><td>SEC</td><td align="right">5.6822</td></tr>
+<tr><td>15</td><td>Mississippi State</td><td>SEC</td><td align="right">5.6488000000000005</td></tr>
+<tr><td>16</td><td>Army</td><td>INDEPENDENT</td><td align="right">5.4754</td></tr>
+<tr><td>17</td><td>Washington</td><td>PAC-12</td><td align="right">5.196000000000001</td></tr>
+<tr><td>18</td><td>UAB</td><td>CUSA</td><td align="right">5.183</td></tr>
+<tr><td>19</td><td>Boise State</td><td>MWC</td><td align="right">5.1658</td></tr>
+<tr><td>20</td><td>West Virginia</td><td>BIG-12</td><td align="right">5.1452</td></tr>
+<tr><td>21</td><td>Iowa</td><td>BIG-TEN</td><td align="right">5.1162</td></tr>
+<tr><td>22</td><td>Texas A&M</td><td>SEC</td><td align="right">5.0484</td></tr>
+<tr><td>23</td><td>Penn State</td><td>BIG-TEN</td><td align="right">5.0106</td></tr>
+<tr><td>24</td><td>Syracuse</td><td>ACC</td><td align="right">4.945400000000001</td></tr>
+<tr><td>25</td><td>Ohio</td><td>MAC</td><td align="right">4.931</td></tr>
+<tr><td>26</td><td>LSU</td><td>SEC</td><td align="right">4.8286</td></tr>
+<tr><td>27</td><td>Missouri</td><td>SEC</td><td align="right">4.565600000000001</td></tr>
+<tr><td>28</td><td>North Texas</td><td>CUSA</td><td align="right">4.289000000000001</td></tr>
+<tr><td>29</td><td>Kentucky</td><td>SEC</td><td align="right">4.280799999999999</td></tr>
+<tr><td>30</td><td>Utah</td><td>PAC-12</td><td align="right">4.279400000000001</td></tr>
+<tr><td>31</td><td>Memphis</td><td>AMERICAN</td><td align="right">4.237</td></tr>
+<tr><td>32</td><td>Auburn</td><td>SEC</td><td align="right">4.1308</td></tr>
+<tr><td>33</td><td>North Carolina State</td><td>ACC</td><td align="right">4.0912</td></tr>
+<tr><td>34</td><td>Oregon</td><td>PAC-12</td><td align="right">4.0758</td></tr>
+<tr><td>35</td><td>Buffalo</td><td>MAC</td><td align="right">3.9620000000000006</td></tr>
+<tr><td>36</td><td>Wisconsin</td><td>BIG-TEN</td><td align="right">3.9286</td></tr>
+<tr><td>37</td><td>Miami (FL)</td><td>ACC</td><td align="right">3.843</td></tr>
+<tr><td>38</td><td>Troy</td><td>SUN-BELT</td><td align="right">3.8276000000000003</td></tr>
+<tr><td>39</td><td>Texas</td><td>BIG-12</td><td align="right">3.728</td></tr>
+<tr><td>40</td><td>Virginia</td><td>ACC</td><td align="right">3.717</td></tr>
+<tr><td>41</td><td>Florida International</td><td>CUSA</td><td align="right">3.608</td></tr>
+<tr><td>42</td><td>Georgia Southern</td><td>SUN-BELT</td><td align="right">3.3774</td></tr>
+<tr><td>43</td><td>Arkansas State</td><td>SUN-BELT</td><td align="right">3.309</td></tr>
+<tr><td>44</td><td>Marshall</td><td>CUSA</td><td align="right">3.2839999999999994</td></tr>
+<tr><td>45</td><td>Temple</td><td>AMERICAN</td><td align="right">3.2406</td></tr>
+<tr><td>46</td><td>Oklahoma State</td><td>BIG-12</td><td align="right">3.0649999999999995</td></tr>
+<tr><td>47</td><td>Southern Mississippi</td><td>CUSA</td><td align="right">3.0494000000000003</td></tr>
+<tr><td>48</td><td>Toledo</td><td>MAC</td><td align="right">3.0079999999999996</td></tr>
+<tr><td>49</td><td>Houston</td><td>AMERICAN</td><td align="right">2.8555999999999995</td></tr>
+<tr><td>50</td><td>BYU</td><td>INDEPENDENT</td><td align="right">2.8552000000000004</td></tr>
+<tr><td>51</td><td>Iowa State</td><td>BIG-12</td><td align="right">2.8320000000000007</td></tr>
+<tr><td>52</td><td>Stanford</td><td>PAC-12</td><td align="right">2.8270000000000004</td></tr>
+<tr><td>53</td><td>Georgia Tech</td><td>ACC</td><td align="right">2.7916000000000003</td></tr>
+<tr><td>54</td><td>Arizona State</td><td>PAC-12</td><td align="right">2.689</td></tr>
+<tr><td>55</td><td>Boston College</td><td>ACC</td><td align="right">2.6735999999999995</td></tr>
+<tr><td>56</td><td>Nevada</td><td>MWC</td><td align="right">2.6720000000000006</td></tr>
+<tr><td>57</td><td>Texas Tech</td><td>BIG-12</td><td align="right">2.5013999999999994</td></tr>
+<tr><td>58</td><td>Eastern Michigan</td><td>MAC</td><td align="right">2.408</td></tr>
+<tr><td>59</td><td>Michigan State</td><td>BIG-TEN</td><td align="right">2.3906000000000005</td></tr>
+<tr><td>60</td><td>Northwestern</td><td>BIG-TEN</td><td align="right">2.2794</td></tr>
+<tr><td>61</td><td>Louisiana Tech</td><td>CUSA</td><td align="right">2.262</td></tr>
+<tr><td>62</td><td>Air Force</td><td>MWC</td><td align="right">2.191</td></tr>
+<tr><td>63</td><td>California</td><td>PAC-12</td><td align="right">2.1540000000000004</td></tr>
+<tr><td>64</td><td>Duke</td><td>ACC</td><td align="right">2.1356</td></tr>
+<tr><td>65</td><td>South Carolina</td><td>SEC</td><td align="right">2.0828000000000007</td></tr>
+<tr><td>66</td><td>Texas Christian</td><td>BIG-12</td><td align="right">2.0662</td></tr>
+<tr><td>67</td><td>Minnesota</td><td>BIG-TEN</td><td align="right">1.9509999999999996</td></tr>
+<tr><td>68</td><td>Middle Tennessee State</td><td>CUSA</td><td align="right">1.9336</td></tr>
+<tr><td>69</td><td>Baylor</td><td>BIG-12</td><td align="right">1.7062000000000006</td></tr>
+<tr><td>70</td><td>Miami (OH)</td><td>MAC</td><td align="right">1.6640000000000001</td></tr>
+<tr><td>71</td><td>Purdue</td><td>BIG-TEN</td><td align="right">1.6072000000000002</td></tr>
+<tr><td>72</td><td>Western Michigan</td><td>MAC</td><td align="right">1.5340000000000003</td></tr>
+<tr><td>73</td><td>Wake Forest</td><td>ACC</td><td align="right">1.4798000000000002</td></tr>
+<tr><td>74</td><td>Vanderbilt</td><td>SEC</td><td align="right">1.4793999999999998</td></tr>
+<tr><td>75</td><td>Florida Atlantic</td><td>CUSA</td><td align="right">1.4096</td></tr>
+<tr><td>76</td><td>San Diego State</td><td>MWC</td><td align="right">1.3676000000000001</td></tr>
+<tr><td>77</td><td>Pitt</td><td>ACC</td><td align="right">1.3298000000000005</td></tr>
+<tr><td>78</td><td>Arizona</td><td>PAC-12</td><td align="right">1.3058000000000003</td></tr>
+<tr><td>79</td><td>Colorado</td><td>PAC-12</td><td align="right">1.2768000000000006</td></tr>
+<tr><td>80</td><td>Tulane</td><td>AMERICAN</td><td align="right">1.2388000000000003</td></tr>
+<tr><td>81</td><td>Virginia Tech</td><td>ACC</td><td align="right">1.2356</td></tr>
+<tr><td>82</td><td>Maryland</td><td>BIG-TEN</td><td align="right">1.1508000000000003</td></tr>
+<tr><td>83</td><td>Ole Miss</td><td>SEC</td><td align="right">1.1019999999999992</td></tr>
+<tr><td>84</td><td>Wyoming</td><td>MWC</td><td align="right">1.0670000000000002</td></tr>
+<tr><td>85</td><td>USC</td><td>PAC-12</td><td align="right">1.0552000000000004</td></tr>
+<tr><td>86</td><td>Nebraska</td><td>BIG-TEN</td><td align="right">1.03</td></tr>
+<tr><td>87</td><td>Louisiana</td><td>SUN-BELT</td><td align="right">0.9489999999999995</td></tr>
+<tr><td>88</td><td>South Florida</td><td>AMERICAN</td><td align="right">0.9086000000000001</td></tr>
+<tr><td>89</td><td>Northern Illinois</td><td>MAC</td><td align="right">0.8780000000000001</td></tr>
+<tr><td>90</td><td>Hawaii</td><td>MWC</td><td align="right">0.7122</td></tr>
+<tr><td>91</td><td>Indiana</td><td>BIG-TEN</td><td align="right">0.6590000000000001</td></tr>
+<tr><td>92</td><td>Charlotte</td><td>CUSA</td><td align="right">0.30799999999999983</td></tr>
+<tr><td>93</td><td>Kansas State</td><td>BIG-12</td><td align="right">0.2196000000000004</td></tr>
+<tr><td>94</td><td>Louisiana-Monroe</td><td>SUN-BELT</td><td align="right">0.18200000000000033</td></tr>
+<tr><td>95</td><td>Liberty</td><td>INDEPENDENT</td><td align="right">1.214306433183765e-16</td></tr>
+<tr><td>96</td><td>Tennessee</td><td>SEC</td><td align="right">-0.07159999999999977</td></tr>
+<tr><td>97</td><td>SMU</td><td>AMERICAN</td><td align="right">-0.07739999999999961</td></tr>
+<tr><td>98</td><td>Old Dominion</td><td>CUSA</td><td align="right">-0.3635999999999996</td></tr>
+<tr><td>99</td><td>Tulsa</td><td>AMERICAN</td><td align="right">-0.5387999999999998</td></tr>
+<tr><td>100</td><td>North Carolina</td><td>ACC</td><td align="right">-0.7060000000000002</td></tr>
+<tr><td>101</td><td>Coastal Carolina</td><td>SUN-BELT</td><td align="right">-0.7550000000000006</td></tr>
+<tr><td>102</td><td>Kansas</td><td>BIG-12</td><td align="right">-0.7811999999999999</td></tr>
+<tr><td>103</td><td>Florida State</td><td>ACC</td><td align="right">-0.8108000000000001</td></tr>
+<tr><td>104</td><td>Ball State</td><td>MAC</td><td align="right">-0.8647999999999997</td></tr>
+<tr><td>105</td><td>Western Kentucky</td><td>CUSA</td><td align="right">-1.0042</td></tr>
+<tr><td>106</td><td>UCLA</td><td>PAC-12</td><td align="right">-1.1184</td></tr>
+<tr><td>107</td><td>Nevada-Las Vegas</td><td>MWC</td><td align="right">-1.1351999999999993</td></tr>
+<tr><td>108</td><td>Texas State</td><td>SUN-BELT</td><td align="right">-1.1749999999999998</td></tr>
+<tr><td>109</td><td>Massachusetts</td><td>INDEPENDENT</td><td align="right">-1.2156</td></tr>
+<tr><td>110</td><td>Akron</td><td>MAC</td><td align="right">-1.364</td></tr>
+<tr><td>111</td><td>Navy</td><td>AMERICAN</td><td align="right">-1.4011999999999998</td></tr>
+<tr><td>112</td><td>East Carolina</td><td>AMERICAN</td><td align="right">-1.8725999999999994</td></tr>
+<tr><td>113</td><td>Colorado State</td><td>MWC</td><td align="right">-1.9271999999999994</td></tr>
+<tr><td>114</td><td>Illinois</td><td>BIG-TEN</td><td align="right">-2.0689999999999995</td></tr>
+<tr><td>115</td><td>New Mexico</td><td>MWC</td><td align="right">-2.2874000000000003</td></tr>
+<tr><td>116</td><td>Arkansas</td><td>SEC</td><td align="right">-2.3629999999999995</td></tr>
+<tr><td>117</td><td>Kent State</td><td>MAC</td><td align="right">-2.3686000000000007</td></tr>
+<tr><td>118</td><td>South Alabama</td><td>SUN-BELT</td><td align="right">-2.5629999999999993</td></tr>
+<tr><td>119</td><td>Central Michigan</td><td>MAC</td><td align="right">-2.688</td></tr>
+<tr><td>120</td><td>Bowling Green State</td><td>MAC</td><td align="right">-2.7412</td></tr>
+<tr><td>121</td><td>Georgia State</td><td>SUN-BELT</td><td align="right">-2.795</td></tr>
+<tr><td>122</td><td>New Mexico State</td><td>INDEPENDENT</td><td align="right">-2.9229999999999996</td></tr>
+<tr><td>123</td><td>UTEP</td><td>CUSA</td><td align="right">-3.0629999999999997</td></tr>
+<tr><td>124</td><td>Rice</td><td>CUSA</td><td align="right">-3.4675999999999996</td></tr>
+<tr><td>125</td><td>San Jose State</td><td>MWC</td><td align="right">-3.8257999999999996</td></tr>
+<tr><td>126</td><td>UTSA</td><td>CUSA</td><td align="right">-3.8289999999999993</td></tr>
+<tr><td>127</td><td>Oregon State</td><td>PAC-12</td><td align="right">-3.843</td></tr>
+<tr><td>128</td><td>Rutgers</td><td>BIG-TEN</td><td align="right">-3.862399999999999</td></tr>
+<tr><td>129</td><td>Louisville</td><td>ACC</td><td align="right">-4.5796</td></tr>
+<tr><td>130</td><td>Connecticut</td><td>AMERICAN</td><td align="right">-6.5156</td></tr>
+
+        </tbody>
+</table>
+
+<script>
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("rankingsTable");
+        switching = true;
+        // Set the sorting direction to ascending:
+        dir = "asc";
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                // Start by saying there should be no switching:
+                shouldSwitch = false;
+                /* Get the two elements you want to compare,
+                one from current row and one from the next: */
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /* Check if the two rows should switch place,
+                based on the direction, asc or desc: */
+                if (dir == "asc") {
+                    if ((n != 3 && n != 0) && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    } else if ((n == 3 || n == 0) && Number(x.innerHTML.valueOf()) > Number(y.innerHTML.valueOf())) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if ((n != 3 && n != 0) && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    } else if ((n == 3 || n == 0) && Number(x.innerHTML.valueOf()) < Number(y.innerHTML.valueOf())) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /* If a switch has been marked, make the switch
+                and mark that a switch has been done: */
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                // Each time a switch is done, increase this count by 1:
+                switchcount ++;
+            } else {
+                /* If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again. */
+                if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</head>
+</html>
+<!-- Special thanks to http://www.convertcsv.com/csv-to-html.htm for generating the table -->
+<!-- And thanks to https://www.w3schools.com/howto/howto_js_sort_table.asp for the sorting -->
