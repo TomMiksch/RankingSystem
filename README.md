@@ -53,3 +53,10 @@ into your terminal
 `python results.py -y=2019 -w=4`
 
 - Output will be written to a csv file in the output folder
+
+## TODO
+- Update SoS calculation - Use previous week's rankings vs conference/FCS/AP rank
+- Update web pages to include win/loss columns
+- Update README because it's probably out of date tbh
+- Migrate all of this into one script
+- Include spread in results.py

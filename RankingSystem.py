@@ -24,7 +24,8 @@ parser.add_argument("-y","--year",
 parser.add_argument("-w","--week", 
     dest="week", 
     required=False, 
-    help="Week of the rankings", 
+    help="Week of the rankings",
+    type=int,
     default=0)
 
 args = parser.parse_known_args()
@@ -39,7 +40,13 @@ if not os.path.exists(output_dir):
 # Variables and whatnot
 teams = Teams(year=str(yearToCalculate))
 teamRankOrder = collections.OrderedDict()
-rank = 1
+previousRankings = collections.OrderedDict()
+
+def getPreviousWeeksRankings(previousWeek):
+    with open("output\\rankings_" + str(yearToCalculate) + "_week_" + str(previousWeek) + ".csv", "r") as csvFile:
+        reader = csv.reader(csvFile)
+        for row in reader:
+            previousRankings[row[1]] =  row[5]
 
 # Give a bonus for beating a Power 5 Conference team (or Notre Dame)
 # Lose points for playing an FCS team, and double those points lost if you lose
@@ -47,30 +54,28 @@ rank = 1
 # Does not count games that were not played
 def gameByGame(team):
     team_schedule = Schedule(team.abbreviation,year=str(yearToCalculate))
-    power_5_win_score = 0
-    fcs_games_played_score = 0
-    opp_rank_score = 0
+    # power_5_win_score = 0
+    # fcs_games_played_score = 0
+    # opp_rank_score = 0
+    sos_score = 0
+    game_played = 0
+    opponent = 0
     for game in team_schedule:
-        if (game.result == "Win" or game.result == "Loss"):
-            opp_conference = game.opponent_conference
-            if (opp_conference == 'ACC' or
-                opp_conference == 'Big Ten' or
-                opp_conference == 'SEC' or
-                opp_conference == 'Pac-12' or
-                opp_conference == 'Big 12' or
-                game.opponent_abbr == 'notre-dame'):
-                if (game.result == 'Win'):
-                    power_5_win_score = power_5_win_score + 1
-            if (opp_conference == 'Non-DI School'):
-                fcs_games_played_score = fcs_games_played_score + 1
-                if (game.result == 'Loss'):
-                    fcs_games_played_score = fcs_games_played_score + 1
-            if (game.opponent_rank != None):
-                opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
-                if (game.result == 'Win'):
-                    opp_rank_score = opp_rank_score + ((51 - game.opponent_rank) / 50)
+        # Get opponent name
+        opponent = previousRankings.get(game.opponent_name)
+        # Get opponent rank from previous week
+            # Either as a variable at the start or straight from the CSV
+        if (opponent == None):
+            opponent = -4
+        if (game.result == "Win"):
+            game_played = game_played + 1
+            sos_score = sos_score + float(opponent) + (1.3 ** float(opponent))
+            
+        elif (game.result == "Loss"):
+            game_played = game_played + 1
+            sos_score = sos_score + float(opponent) - (1.3 ** (-1 * float(opponent)))
 
-    return [(power_5_win_score * .3), (fcs_games_played_score * .09), (opp_rank_score * .1)]
+    return sos_score / game_played
 
 # Basic formula to scrape sports-reference
 # Team is the team being analyzed
@@ -117,13 +122,13 @@ def scrapeFormula(team):
 
 # Calculate the ranking score for each team
 def calculateRankScore(team):
-    schedule_score = gameByGame(team)
-    calc_wins = (team.wins + schedule_score[0] - schedule_score[1] + schedule_score[2]) * .2
+    getPreviousWeeksRankings(week - 1)
+    strength_of_schedule = gameByGame(team)
     ppg_diff = (team.points_per_game - team.points_against_per_game) * .15
     diff_scraper = scrapeFormula(team)
     ypg_diff = diff_scraper[0] * .01
     turnover_diff = diff_scraper[1] * -.07
-    total = calc_wins + ypg_diff + ppg_diff + turnover_diff
+    total = strength_of_schedule + ypg_diff + ppg_diff + turnover_diff
     print(team.name + "'s score: " + str(total))
     return total
 

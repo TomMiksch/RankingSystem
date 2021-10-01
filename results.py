@@ -16,7 +16,7 @@ parser.add_argument("-y", "--year",
     dest="currentYear", 
     required=False, 
     help="Year to grab data", 
-    default=datetime.now().year - 1)
+    default=datetime.now().year)
 parser.add_argument("-w", "--week",
     dest="week", 
     required=False, 
