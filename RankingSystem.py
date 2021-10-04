@@ -99,16 +99,20 @@ def scrapeFormula(team):
     for row in rows:
         ypg_diff_cell = row.find("td", {"data-stat": "tot_yds"})
         turnover_diff_cell = row.find("td", {"data-stat": "turnovers"})
+        penalty_diff_cell = row.find("td", {"data-stat": "penalty"})
         if (ypg_diff_cell != None and count == 2):
             a = ypg_diff_cell.text.strip().encode()
             ypg_diff = a.decode("utf-8")
         if (turnover_diff_cell != None and count == 2):
             a = turnover_diff_cell.text.strip().encode()
             turnover_diff = a.decode("utf-8")
+        if (penalty_diff_cell != None and count == 2):
+            a = penalty_diff_cell.text.strip().encode()
+            penalty_diff = a.decode("utf-8")
         
         count = count + 1
 
-    return [float(ypg_diff), float(turnover_diff)]
+    return [float(ypg_diff), float(turnover_diff), float(penalty_diff)]
 
 # Gather the YPG allowed by each team
 # def scrapeYPGDiff(team):
@@ -126,9 +130,10 @@ def calculateRankScore(team):
     strength_of_schedule = gameByGame(team)
     ppg_diff = (team.points_per_game - team.points_against_per_game) * .15
     diff_scraper = scrapeFormula(team)
-    ypg_diff = diff_scraper[0] * .01
-    turnover_diff = diff_scraper[1] * -.07
-    total = strength_of_schedule + ypg_diff + ppg_diff + turnover_diff
+    ypg_diff = diff_scraper[0] * .05
+    turnover_diff = diff_scraper[1] * -1
+    penalty_diff = diff_scraper[2] * -.5
+    total = strength_of_schedule + ypg_diff + ppg_diff + turnover_diff + penalty_diff
     print(team.name + "'s score: " + str(total))
     return total
 
