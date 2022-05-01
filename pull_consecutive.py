@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 start = time.time()
 
 # Variables and whatnot
-year = 2021
+year = 2022
 endYear = 1936
 
 
@@ -77,7 +77,12 @@ while year >= endYear or len(init_set) == 0:
     result_dict = data[1]
     year = year - 1
 
-print('Result: ' + str(sorted(result_dict.items(), key = lambda t: t[1])))
+sorted = sorted(result_dict.items(), key = lambda t: t[1])
+
+for item in sorted:
+    consecutive = (2022 - item[1]) + 1
+    print('[' + item[0] + '](#f/' + item[0].replace(' ', '').replace('st.', 'state').lower() + ') | ' + str(item[1]) + ' | ' + str(consecutive))
+
 # End timing and output how long it took
 stop = time.time()
 totalMinutes = ((stop - start)/60)
